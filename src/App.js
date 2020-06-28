@@ -105,7 +105,7 @@ function App() {
 
   function getLocation(e){
     e.preventDefault();
-    Geocode.setApiKey("AIzaSyBu6NyTxgHpIcOEBZG21gGnF9JNqLUdYew");
+    Geocode.setApiKey("");
     let testLat = 0;
     let testLong = 0;
 

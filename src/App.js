@@ -13,9 +13,8 @@ function App() {
   const [jsonCoordinates, setJsonCoordinates] = useState("");
   const [description, setDescription] = useState(null);
   const [locationLink, setLocationLink] = useState(null);
-  const [contentPageID, setContentPageID] = useState("");
 
-  function createJsonAddress(address, coordinates){
+  function createJsonAddress(address, coordinates, addressID){
     const array = address.split(',')
     array.pop()
     let secondLine = null;
@@ -27,10 +26,8 @@ function App() {
     let splitElement = element.split(' ');
     let testPotsCode = splitElement[2] + " " + splitElement[3];
 
-    
-
     const obj = {
-        "id": typedAddress + "_MAP_LOCATION",
+        "id": addressID + "_MAP_LOCATION",
         "type": "CONTENT_PAGE",
         "line1": typedAddress,
         "line2": array[0],
@@ -91,10 +88,11 @@ function App() {
 }
 
   function getFullAddress(coordinates){
+    const addressID = getContentPageID();
     Geocode.fromLatLng(coordinates[0], coordinates[1]).then(
       response => {
         const address = response.results[0].formatted_address;
-        createJsonAddress(address, coordinates);
+        createJsonAddress(address, coordinates, addressID);
         setAddress(address);
       },
       error => {
@@ -103,9 +101,15 @@ function App() {
     );
   }
 
+  function getContentPageID(){
+    const originalAddress = typedAddress.toUpperCase().split(' ');
+    const refactoredAddress = originalAddress[0] + "_" + originalAddress[1] + "_";
+    return refactoredAddress;
+  }
+
   function getLocation(e){
     e.preventDefault();
-    Geocode.setApiKey("");
+    Geocode.setApiKey("AIzaSyBu6NyTxgHpIcOEBZG21gGnF9JNqLUdYew");
     let testLat = 0;
     let testLong = 0;
 
@@ -116,6 +120,7 @@ Geocode.fromAddress(typedAddress).then(
     createJson(lat, lng)
     setLatitude(lat);
     setLongitude(lng);
+    getContentPageID();
     testLat = lat;
     testLong = lng;
     console.log("hit lat, long");
@@ -124,7 +129,6 @@ Geocode.fromAddress(typedAddress).then(
     console.error(error);
   }
 ).then(() => {
-  console.log("trigger get address");
   getFullAddress([testLat, testLong]);
   });
 }

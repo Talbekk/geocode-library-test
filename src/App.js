@@ -10,7 +10,6 @@ function App() {
   const [address, setAddress] = useState("");
   const [typedAddress, settypedAddress] = useState("");
   const [jsonAddress, setJsonAddress] = useState("");
-  const [jsonCoordinates, setJsonCoordinates] = useState("");
   const [description, setDescription] = useState(null);
   const [locationLink, setLocationLink] = useState(null);
 
@@ -76,17 +75,6 @@ function App() {
     
   }
 
-  function createJson(lat, lng){
-    const obj = {
-        "latitude": lat,
-        "longitude": lng,
-    }
-
-    let myJson = JSON.stringify(obj);
-    console.log(myJson)
-    setJsonCoordinates(myJson)
-}
-
   function getFullAddress(coordinates){
     const addressID = getContentPageID();
     Geocode.fromLatLng(coordinates[0], coordinates[1]).then(
@@ -109,7 +97,7 @@ function App() {
 
   function getLocation(e){
     e.preventDefault();
-    Geocode.setApiKey("AIzaSyBu6NyTxgHpIcOEBZG21gGnF9JNqLUdYew");
+    Geocode.setApiKey("");
     let testLat = 0;
     let testLong = 0;
 
@@ -117,7 +105,6 @@ function App() {
 Geocode.fromAddress(typedAddress).then(
   response => {
     const { lat, lng } = response.results[0].geometry.location;
-    createJson(lat, lng)
     setLatitude(lat);
     setLongitude(lng);
     getContentPageID();

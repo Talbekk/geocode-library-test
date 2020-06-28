@@ -91,7 +91,12 @@ function App() {
 
   function getContentPageID(){
     const originalAddress = typedAddress.toUpperCase().split(' ');
-    const refactoredAddress = originalAddress[0] + "_" + originalAddress[1] + "_";
+    // const refactoredAddress = originalAddress[0] + "_" + originalAddress[1] + "_";
+    let refactoredAddress = "";
+    originalAddress.forEach((item) => { 
+      console.log("address", item);
+      refactoredAddress = refactoredAddress + item + "_";
+    });
     return refactoredAddress;
   }
 

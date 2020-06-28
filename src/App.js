@@ -12,6 +12,7 @@ function App() {
   const [jsonAddress, setJsonAddress] = useState("");
   const [description, setDescription] = useState(null);
   const [locationLink, setLocationLink] = useState(null);
+  const [imageLink, setImageLink] = useState(null);
 
   function createJsonAddress(address, coordinates, addressID){
     const array = address.split(',')
@@ -32,7 +33,7 @@ function App() {
         "line2": array[0],
         "line3": null,
         "icon": null,
-        "image": "assets/arn_pleasure_beach.jpg",
+        "image": "assets/" + imageLink,
         "address": {
         "addressLine1": array[0],
         "addressLine2": secondLine,
@@ -159,6 +160,10 @@ Geocode.fromAddress(typedAddress).then(
           <label>
             Link:
             <input type="text" name="name" onChange={(e) => handleChange(e, setLocationLink)}/>
+          </label>
+          <label>
+            Link:
+            <input type="text" name="name" onChange={(e) => handleChange(e, setImageLink)}/>
           </label>
         </form>
         <br></br>

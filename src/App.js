@@ -11,8 +11,10 @@ function App() {
   const [typedAddress, settypedAddress] = useState("");
   const [jsonAddress, setJsonAddress] = useState("");
   const [jsonCoordinates, setJsonCoordinates] = useState("");
+  const [description, setDescription] = useState(null);
+  const [locationLink, setLocationLink] = useState(null);
 
-  function createJsonAddress(address){
+  function createJsonAddress(address, coordinates){
     const array = address.split(',')
     array.pop()
     let secondLine = null;
@@ -24,12 +26,52 @@ function App() {
     let splitElement = element.split(' ');
     let testPotsCode = splitElement[2] + " " + splitElement[3];
 
+    
 
     const obj = {
+        "id": typedAddress + "_MAP_LOCATION",
+        "type": "CONTENT_PAGE",
+        "line1": typedAddress,
+        "line2": array[0],
+        "line3": null,
+        "icon": null,
+        "image": "assets/arn_pleasure_beach.jpg",
+        "address": {
         "addressLine1": array[0],
         "addressLine2": secondLine,
         "city": splitElement[1],
         "postcode": testPotsCode,
+        "latitude": coordinates[0],
+        "longitude": coordinates[1]
+        },
+        "components": [
+          {
+              "type": "VERTICAL_SPACER_COMPONENT"
+          },
+          {
+              "type": "TEXT_COMPONENT",
+              "value": description,
+              "align": "CENTER",
+              "fontSize": "MEDIUM",
+              "isItalic": false,
+              "isBold": false,
+              "useInvertedColours": false
+          },
+          {
+              "type": "VERTICAL_SPACER_COMPONENT"
+          },
+          {
+              "type": "BUTTON_COMPONENT",
+              "buttonType": "LINK",
+              "line1": "Visit Website",
+              "line2": null,
+              "icon": null,
+              "value": locationLink
+          },
+          {
+              "type": "VERTICAL_SPACER_COMPONENT"
+          }
+      ]
     }
     let myJson = JSON.stringify(obj);
     setJsonAddress(myJson)
@@ -51,7 +93,7 @@ function App() {
     Geocode.fromLatLng(coordinates[0], coordinates[1]).then(
       response => {
         const address = response.results[0].formatted_address;
-        createJsonAddress(address)
+        createJsonAddress(address, coordinates);
         setAddress(address);
       },
       error => {
@@ -62,7 +104,7 @@ function App() {
 
   function getLocation(e){
     e.preventDefault();
-    Geocode.setApiKey("");
+    Geocode.setApiKey("AIzaSyBu6NyTxgHpIcOEBZG21gGnF9JNqLUdYew");
     let testLat = 0;
     let testLong = 0;
 
@@ -86,8 +128,8 @@ Geocode.fromAddress(typedAddress).then(
   });
 }
 
-  function handleChange(e){
-    settypedAddress(e.target.value);
+  function handleChange(e, setter){
+    setter(e.target.value);
   }
 
   // function chooseCountry(e){
@@ -111,13 +153,20 @@ Geocode.fromAddress(typedAddress).then(
         <form onSubmit={getLocation}>
           <label>
             Address:
-            <input type="text" name="name" onChange={handleChange}/>
+            <input type="text" name="name" onChange={(e) => handleChange(e, settypedAddress)}/>
+          </label>
+          <label>
+           Description:
+            <input type="text" name="name" onChange={(e) => handleChange(e, setDescription)}/>
+          </label>
+          <label>
+            Link:
+            <input type="text" name="name" onChange={(e) => handleChange(e, setLocationLink)}/>
           </label>
         </form>
         <br></br>
         <button type="button" onClick={getLocation}>Click To Get Location Details!</button>
         <p>{jsonAddress}</p>
-
         <p>{jsonCoordinates}</p>
       </header>
     </div>

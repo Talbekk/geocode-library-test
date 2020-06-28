@@ -13,6 +13,7 @@ function App() {
   const [jsonCoordinates, setJsonCoordinates] = useState("");
   const [description, setDescription] = useState(null);
   const [locationLink, setLocationLink] = useState(null);
+  const [contentPageID, setContentPageID] = useState("");
 
   function createJsonAddress(address, coordinates){
     const array = address.split(',')
@@ -167,7 +168,6 @@ Geocode.fromAddress(typedAddress).then(
         <br></br>
         <button type="button" onClick={getLocation}>Click To Get Location Details!</button>
         <p>{jsonAddress}</p>
-        <p>{jsonCoordinates}</p>
       </header>
     </div>
   );
